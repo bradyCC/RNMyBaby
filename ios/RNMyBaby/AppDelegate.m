@@ -6,6 +6,7 @@
  */
 
 #import "AppDelegate.h"
+#import "RNSplashScreen.h"  // 引入 RNSplashScreen.h
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -27,6 +28,7 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [RNSplashScreen show];  // 显示启动屏
   return YES;
 }
 
