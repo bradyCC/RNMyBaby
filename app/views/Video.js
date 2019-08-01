@@ -18,7 +18,7 @@ import {
   Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import Mock from "mockjs";
+// import Mock from "mockjs";
 
 // Dimensions 用于获取设备宽、高、分辨率
 const { width, height } = Dimensions.get("window");
@@ -114,7 +114,9 @@ export default class Video extends Component<Props> {
   // 加载更多数据 - 上啦加载更多、滑动分页
   fetchMoreData = () => {
     console.log("触底了!");
-    if (resultData.resultList.length == resultData.total) return false;
+    if (resultData.resultList.length == resultData.total) {
+      return false;
+    }
     setTimeout(() => {
       if (!this.state.isLoading) {
         resultData.page = resultData.page + resultData.step;
@@ -127,9 +129,11 @@ export default class Video extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>视频列表</Text>
-        </View>
+        {Platform.OS === "ios" ? null : (
+          <View style={styles.header}>
+            <Text style={styles.headerText}>视频列表</Text>
+          </View>
+        )}
         <FlatList
           data={resultData.resultList}
           extraData={this.state}

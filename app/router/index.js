@@ -32,7 +32,7 @@ const VideoRouteConfigs = {
       header: Platform.select({
         android: null
       }),
-      title: "视频"
+      title: "视频列表"
     }
   },
   // VideoDetail: {
