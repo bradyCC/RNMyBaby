@@ -12,14 +12,11 @@ import {
   Dimensions,
   Platform,
   FlatList,
-  Image,
-  TouchableOpacity,
-  TouchableHighlight,
-  Alert,
   ActivityIndicator
 } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 // import Mock from "mockjs";
+
+import VideoListItem from "../components/VideoListItem";
 
 // Dimensions 用于获取设备宽、高、分辨率
 const { width, height } = Dimensions.get("window");
@@ -188,52 +185,7 @@ export default class Video extends Component<Props> {
           }}
           refreshing={this.state.isRefreshing}
           onRefresh={() => this.onRefreshData()}
-          renderItem={({ item }) => (
-            <View style={styles.item}>
-              <Text style={styles.title}>{item.title}</Text>
-              <TouchableOpacity onPress={() => Alert.alert(item.thumb)}>
-                <View style={styles.thumbBox}>
-                  <Image style={styles.thumb} source={{ uri: item.thumb }} />
-                  <Icon
-                    // name={focused ? "ios-home" : "ios-home"}
-                    name="ios-play"
-                    size={28}
-                    style={styles.play}
-                  />
-                </View>
-              </TouchableOpacity>
-              <View style={styles.itemFooter}>
-                <TouchableOpacity
-                  style={styles.flexStyle}
-                  onPress={() => Alert.alert("喜欢")}
-                >
-                  <View style={styles.handleBox}>
-                    <Icon
-                      // name={focused ?   // name={focuse-home"}
-                      name="ios-heart-empty"
-                      size={28}
-                      style={styles.up}
-                    />
-                    <Text style={styles.handleText}>喜欢</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.flexStyle}
-                  onPress={() => Alert.alert("点赞")}
-                >
-                  <View style={[styles.handleBox, styles.handleBoxRight]}>
-                    <Icon
-                      // name={focused ? "ios-home" : "ios-home"}
-                      name="ios-chatbubbles"
-                      size={28}
-                      style={styles.commentIcon}
-                    />
-                    <Text style={styles.handleText}>点赞</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
+          renderItem={({ item }) => <VideoListItem item={item} />}
         />
       </View>
     );
@@ -265,70 +217,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#fff"
-  },
-  item: {
-    width: width,
-    // marginTop: 12,
-    alignItems: "center"
-  },
-  title: {
-    fontSize: 18,
-    padding: 10,
-    color: "#333"
-  },
-  thumbBox: {
-    // backgroundColor: "#108ee9"
-  },
-  thumb: {
-    width: width,
-    height: width * 0.56,
-    resizeMode: "cover"
-  },
-  play: {
-    position: "absolute",
-    right: 14,
-    bottom: 14,
-    width: 46,
-    height: 46,
-    paddingTop: 9,
-    paddingLeft: 18,
-    borderWidth: 1,
-    // backgroundColor: "transparent",
-    borderColor: "#000",
-    borderRadius: 23
-    // color: "#ed7b66"
-  },
-  itemFooter: {
-    flexDirection: "row",
-    // justifyContent: "space-between"
-    backgroundColor: "#eee",
-    paddingTop: 4,
-    paddingBottom: 4
-  },
-  handleBox: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "#fff"
-  },
-  handleBoxRight: {
-    borderLeftWidth: 1,
-    borderLeftColor: "#eee"
-  },
-  up: {
-    fontSize: 22,
-    color: "#ed7b66"
-  },
-  commentIcon: {
-    fontSize: 22,
-    color: "#333"
-  },
-  handleText: {
-    fontSize: 18,
-    color: "#333",
-    marginLeft: 12
   },
   fetchMore: {
     width: width,
