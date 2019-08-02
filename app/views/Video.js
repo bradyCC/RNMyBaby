@@ -15,7 +15,8 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight,
-  Alert
+  Alert,
+  ActivityIndicator
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 // import Mock from "mockjs";
@@ -44,7 +45,8 @@ export default class Video extends Component<Props> {
     // 初始状态
     this.state = {
       isLoading: false,
-      isRefreshing: false
+      isRefreshing: false,
+      noMore: false
     };
   }
 
@@ -73,10 +75,6 @@ export default class Video extends Component<Props> {
     //   }
     // );
 
-    this.setState({
-      isLoading: true
-    });
-
     // 使用 fetch 获取模拟数据
     let url = `http://rap2api.taobao.org/app/mock/227073/api/videolist?accessToken=123?${
       resultData.page
@@ -96,33 +94,37 @@ export default class Video extends Component<Props> {
           resultData.resultList.length > 0
             ? [...resultData.resultList, ...result.data]
             : result.data;
-
-        this.setState(
-          {
-            isLoading: false
-          },
-          () => {
-            console.log(resultData.resultList);
-          }
-        );
+        resultData.total = result.total;
+        this.setState({
+          isLoading: false
+        });
+        if (resultData.resultList.length == resultData.total) {
+          this.setState({
+            noMore: true
+          });
+        }
+        console.log(resultData.resultList);
       })
       .catch(err => {
         console.error(err);
       });
   };
 
-  // 加载更多数据 - 上啦加载更多、滑动分页
+  // 加载更多数据 - 上拉加载更多、滑动分页
   fetchMoreData = () => {
     console.log("触底了!");
-    if (resultData.resultList.length == resultData.total) {
+    if (
+      resultData.resultList.length == resultData.total ||
+      this.state.isLoading
+    )
       return false;
-    }
+    this.setState({
+      isLoading: true
+    });
     setTimeout(() => {
-      if (!this.state.isLoading) {
-        resultData.page = resultData.page + resultData.step;
-        this.fetchData();
-      }
-    }, 3000);
+      resultData.page = resultData.page + resultData.step;
+      this.fetchData();
+    }, 1000);
   };
 
   // 渲染
@@ -139,6 +141,27 @@ export default class Video extends Component<Props> {
           extraData={this.state}
           keyExtractor={item => item._id}
           onEndReached={() => this.fetchMoreData()}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={() => {
+            if (this.state.isLoading) {
+              return (
+                <View style={styles.fetchMore}>
+                  <Text style={styles.fetchMoreText}>加载更多</Text>
+                  <View style={styles.indicatorStyle}>
+                    <ActivityIndicator size="small" color="#108ee9" />
+                  </View>
+                </View>
+              );
+            } else if (this.state.noMore) {
+              return (
+                <View style={styles.fetchMore}>
+                  <Text style={styles.fetchMoreText}>到底了</Text>
+                </View>
+              );
+            } else {
+              return null;
+            }
+          }}
           renderItem={({ item }) => (
             <View style={styles.item}>
               <Text style={styles.title}>{item.title}</Text>
@@ -279,6 +302,22 @@ const styles = StyleSheet.create({
   handleText: {
     fontSize: 18,
     color: "#333",
+    marginLeft: 12
+  },
+  fetchMore: {
+    width: width,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 12,
+    paddingBottom: 12
+  },
+  fetchMoreText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333"
+  },
+  indicatorStyle: {
     marginLeft: 12
   }
 });
