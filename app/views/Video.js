@@ -25,10 +25,10 @@ import Icon from "react-native-vector-icons/Ionicons";
 const { width, height } = Dimensions.get("window");
 
 let resultData = {
-  page: 1,
-  step: 1,
-  total: 0,
-  resultList: []
+  page: 1, // 当前页
+  step: 1, // 翻页
+  total: 0, // 数据总条数
+  resultList: [] // 数据列表
 };
 
 type Props = {};
@@ -44,9 +44,9 @@ export default class Video extends Component<Props> {
     super(props);
     // 初始状态
     this.state = {
-      isLoading: false,
-      isRefreshing: false,
-      noMore: false
+      isLoading: false, // 上拉加载更多状态
+      isRefreshing: false, // 下拉刷新状态
+      noMore: false // 判断是否有更多数据需要加载
     };
   }
 
@@ -90,13 +90,22 @@ export default class Video extends Component<Props> {
       .then(response => response.json())
       .then(result => {
         console.log(result);
-        resultData.resultList =
-          resultData.resultList.length > 0
-            ? [...resultData.resultList, ...result.data]
-            : result.data;
+        if (this.state.isRefreshing) {
+          resultData.resultList =
+            resultData.resultList.length > 0
+              ? [...result.data, ...resultData.resultList]
+              : result.data;
+        } else {
+          resultData.resultList =
+            resultData.resultList.length > 0
+              ? [...resultData.resultList, ...result.data]
+              : result.data;
+        }
         resultData.total = result.total;
+
         this.setState({
-          isLoading: false
+          isLoading: false,
+          isRefreshing: false
         });
         if (resultData.resultList.length == resultData.total) {
           this.setState({
@@ -125,6 +134,21 @@ export default class Video extends Component<Props> {
       resultData.page = resultData.page + resultData.step;
       this.fetchData();
     }, 1000);
+  };
+
+  // 刷新数据 - 下拉刷新数据
+  onRefreshData = () => {
+    console.log("刷新了!");
+    if (
+      resultData.resultList.length == resultData.total ||
+      this.state.isRefreshing
+    )
+      return false;
+    this.setState({
+      isRefreshing: true
+    });
+    resultData.page = resultData.page + resultData.step;
+    this.fetchData();
   };
 
   // 渲染
@@ -162,6 +186,8 @@ export default class Video extends Component<Props> {
               return null;
             }
           }}
+          refreshing={this.state.isRefreshing}
+          onRefresh={() => this.onRefreshData()}
           renderItem={({ item }) => (
             <View style={styles.item}>
               <Text style={styles.title}>{item.title}</Text>
@@ -269,8 +295,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     // backgroundColor: "transparent",
     borderColor: "#000",
-    borderRadius: 23,
-    color: "#ed7b66"
+    borderRadius: 23
+    // color: "#ed7b66"
   },
   itemFooter: {
     flexDirection: "row",
