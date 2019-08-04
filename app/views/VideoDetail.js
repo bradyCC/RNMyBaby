@@ -42,7 +42,11 @@ export default class VideoDetail extends Component<Props> {
     const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
-        <VideoPlayer video={params.video} options={this.state.options} />
+        <VideoPlayer
+          video={params.video}
+          options={this.state.options}
+          author={params.author}
+        />
       </View>
     );
   }
@@ -56,13 +60,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FCFF"
   },
   backgroundVideo: {
-    // width: width,
-    // height: (width * 9) / 16,
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
+    width: width,
+    height: (width * 9) / 16,
+    // position: "absolute",
+    // top: 0,
+    // left: 0,
+    // bottom: 0,
+    // right: 0,
     backgroundColor: "#000"
   }
 });

@@ -5,7 +5,7 @@
  * @Description:
  */
 import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import Video from "react-native-video";
 import PropTypes from "prop-types";
 
@@ -17,7 +17,8 @@ export default class VideoPlayer extends Component<Props> {
   // 属性类型
   static propTypes = {
     video: PropTypes.string,
-    options: PropTypes.object
+    options: PropTypes.object,
+    author: PropTypes.object
   };
 
   // 构造
@@ -35,7 +36,7 @@ export default class VideoPlayer extends Component<Props> {
 
   // 渲染
   render() {
-    const { video, options } = this.props;
+    const { video, options, author } = this.props;
     return (
       <View style={styles.container}>
         <Video
@@ -44,7 +45,7 @@ export default class VideoPlayer extends Component<Props> {
           // volume={3}  //声音大小
           // paused={false}  //默认播放
           // repeat={false} //不重复播放
-          // muted={false} //是否静音
+          muted={true} //是否静音
           controls={options.controls} // 显示控件
           resizeMode={options.resizeMode} // 等比缩放
           style={options.style} // 样式
@@ -56,6 +57,18 @@ export default class VideoPlayer extends Component<Props> {
           // ref={ref => (this.player = ref)}
           // onBuffer={}
         />
+        <View style={styles.authorInfo}>
+          <View style={styles.infoLeft}>
+            <Image
+              source={{ uri: author.avatar }}
+              style={styles.authorHeader}
+            />
+          </View>
+          <View style={styles.infoRight}>
+            <Text>{author.nickname}</Text>
+            <Text>{author.desc}</Text>
+          </View>
+        </View>
       </View>
     );
   }
@@ -71,5 +84,19 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     // alignItems: "center",
     backgroundColor: "#FCF5FF"
+  },
+  authorInfo: {
+    padding: 12,
+    flexDirection: "row",
+    // alignItems: "center"
+  },
+  authorHeader: {
+    width: 64,
+    height: 64,
+    borderRadius: 32
+  },
+  infoRight: {
+    flex: 1,
+    marginLeft: 8
   }
 });

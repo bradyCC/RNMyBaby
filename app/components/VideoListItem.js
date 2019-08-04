@@ -78,7 +78,8 @@ export default class VideoListItem extends Component<Props> {
           onPress={() =>
             props.navigation.navigate("VideoDetail", {
               title: item.title,
-              video: item.video
+              video: item.video,
+              author: item.author
             })
           }
         >
