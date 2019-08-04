@@ -4,8 +4,8 @@
  * @Last Created time: 20:19:28
  * @Description:
  */
-import React, {Component} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React, { Component} from "react";
+import { StyleSheet, View, Text } from "react-native";
 
 type Props = {};
 export default class Account extends Component<Props> {
@@ -35,8 +35,8 @@ export default class Account extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF"
+  }
 });

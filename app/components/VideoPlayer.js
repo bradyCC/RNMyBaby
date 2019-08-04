@@ -7,6 +7,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import Video from "react-native-video";
+import PropTypes from "prop-types";
 
 type Props = {};
 export default class VideoPlayer extends Component<Props> {
@@ -14,7 +15,10 @@ export default class VideoPlayer extends Component<Props> {
   static defaultProps = {};
 
   // 属性类型
-  static propTypes = {};
+  static propTypes = {
+    video: PropTypes.string,
+    options: PropTypes.object
+  };
 
   // 构造
   constructor(props) {
@@ -23,22 +27,41 @@ export default class VideoPlayer extends Component<Props> {
     this.state = {};
   }
 
+  /**
+   * Video 样式:
+   * 1. 设置width、height 等比缩放置顶
+   * 2. 使用 absolute 绝对定位，垂直居中，全屏显示
+   * */
+
   // 渲染
   render() {
+    const { video, options } = this.props;
     return (
       <View style={styles.container}>
         <Video
-          source={{
-            uri:
-              "https://vd3.bdstatic.com/mda-jafwr07mn3xxvkqs/sc/mda-jafwr07mn3xxvkqs.mp4"
-          }}
+          source={{ uri: video }}
+          // rate={1.0} //1.0表示默认速率
+          // volume={3}  //声音大小
+          // paused={false}  //默认播放
+          // repeat={false} //不重复播放
+          // muted={false} //是否静音
+          controls={options.controls} // 显示控件
+          resizeMode={options.resizeMode} // 等比缩放
+          style={options.style} // 样式
+          // onLoadStart={}//视频开始播放的时候调用方法
+          // onLoad={} //不断调用
+          // onProgress={}//播放时，每隔250ms，发送请求，附带当前播放时间
+          // onEnd={}//播放结束
+          // onError={}//遇到错误时
           // ref={ref => (this.player = ref)}
-          // onBuffer={this.onBuffer}
-          // onError={this.videoError}
-          style={styles.backgroundVideo}
+          // onBuffer={}
         />
       </View>
     );
+  }
+
+  componentDidMount() {
+    console.log(this.props);
   }
 }
 
@@ -47,13 +70,6 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  },
-  backgroundVideo: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0
+    backgroundColor: "#FCF5FF"
   }
 });

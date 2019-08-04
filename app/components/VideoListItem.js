@@ -13,7 +13,7 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight,
-  Alert,
+  Alert
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import propTypes from "prop-types";
@@ -76,7 +76,10 @@ export default class VideoListItem extends Component<Props> {
         <Text style={styles.title}>{item.title}</Text>
         <TouchableOpacity
           onPress={() =>
-            props.navigation.navigate("VideoDetail", { title: item.title })
+            props.navigation.navigate("VideoDetail", {
+              title: item.title,
+              video: item.video
+            })
           }
         >
           <View style={styles.thumbBox}>
