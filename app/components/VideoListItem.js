@@ -41,18 +41,44 @@ export default class VideoListItem extends Component<Props> {
   }
 
   giveLike = id => {
-    this.setState({
-      like: !this.state.like
-    });
+    let url = `http://rap2api.taobao.org/app/mock/227073/api/givelike`;
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        accessToken: "123",
+        id: id,
+        like: true
+      })
+    };
+
+    fetch(url, options)
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          this.setState({
+            like: !this.state.like
+          });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   // 渲染
   render() {
-    const { item } = this.props;
+    const { item, props } = this.props;
     return (
       <View style={styles.item}>
         <Text style={styles.title}>{item.title}</Text>
-        <TouchableOpacity onPress={() => Alert.alert(item.thumb)}>
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate("VideoDetail", { title: item.title })
+          }
+        >
           <View style={styles.thumbBox}>
             <Image style={styles.thumb} source={{ uri: item.thumb }} />
             <Icon

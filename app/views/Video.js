@@ -185,7 +185,9 @@ export default class Video extends Component<Props> {
           }}
           refreshing={this.state.isRefreshing}
           onRefresh={() => this.onRefreshData()}
-          renderItem={({ item }) => <VideoListItem item={item} />}
+          renderItem={({ item }) => (
+            <VideoListItem item={item} props={this.props} />
+          )}
         />
       </View>
     );

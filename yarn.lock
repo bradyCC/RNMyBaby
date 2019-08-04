@@ -3910,6 +3910,11 @@ jsx-ast-utils@^2.0.1:
     array-includes "^3.0.3"
     object.assign "^4.1.0"
 
+keymirror@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npm.taobao.org/keymirror/download/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
+  integrity sha1-kYiJ6hP40KQufFVyUO7nE63JXDU=
+
 kind-of@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/kind-of/download/kind-of-1.1.0.tgz#140a3d2d41a36d2efcfa9377b62c24f8495a5c44"
@@ -5356,6 +5361,15 @@ react-native-vector-icons@^6.6.0:
     prop-types "^15.6.2"
     yargs "^13.2.2"
 
+react-native-video@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.npm.taobao.org/react-native-video/download/react-native-video-5.0.0.tgz#30b58e31f0776bfa8dc71109c25114d4e50d9209"
+  integrity sha1-MLWOMfB3a/qNxxEJwlEU1OUNkgk=
+  dependencies:
+    keymirror "^0.1.1"
+    prop-types "^15.5.10"
+    shaka-player "^2.4.4"
+
 react-native-webview@^5.12.1:
   version "5.12.1"
   resolved "https://registry.npm.taobao.org/react-native-webview/download/react-native-webview-5.12.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-native-webview%2Fdownload%2Freact-native-webview-5.12.1.tgz#5e2b124e9087d64fc40040d911c10ee5744b5d4d"
@@ -5905,6 +5919,11 @@ setprototypeof@1.1.1:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/setprototypeof/download/setprototypeof-1.1.1.tgz#7e95acb24aa92f5885e0abef5ba131330d4ae683"
   integrity sha1-fpWsskqpL1iF4KvvW6ExMw1K5oM=
+
+shaka-player@^2.4.4:
+  version "2.5.4"
+  resolved "https://registry.npm.taobao.org/shaka-player/download/shaka-player-2.5.4.tgz#0491ec3bfddf91453f09ac1d731e5eb21e39f684"
+  integrity sha1-BJHsO/3fkUU/Cawdcx5esh459oQ=
 
 shebang-command@^1.2.0:
   version "1.2.0"

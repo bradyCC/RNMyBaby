@@ -18,7 +18,7 @@ import Record from "../views/Record";
 import Picture from "../views/Picture";
 import Account from "../views/Account";
 
-// import VideoDetail from "../views/VideoDetail";
+import VideoDetail from "../views/VideoDetail";
 // import RecordDetail from "../views/RecordDetail";
 // import PictureDetail from "../views/PictureDetail";
 // import AccountInfo from "../views/AccountInfo";
@@ -35,12 +35,12 @@ const VideoRouteConfigs = {
       title: "视频列表"
     }
   },
-  // VideoDetail: {
-  //   screen: VideoDetail,
-  //   navigationOptions: ({ navigation }) => ({
-  //     title: `${navigation.state.params.title}`
-  //   })
-  // },
+  VideoDetail: {
+    screen: VideoDetail,
+    navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.title}`
+    })
+  },
   // VideoCenterDetail: {
   //   screen: VideoCenterDetail,
   //   navigationOptions: ({ navigation }) => ({
