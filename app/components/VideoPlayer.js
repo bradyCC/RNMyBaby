@@ -41,11 +41,11 @@ export default class VideoPlayer extends Component<Props> {
       <View style={styles.container}>
         <Video
           source={{ uri: video }}
-          // rate={1.0} //1.0表示默认速率
-          // volume={3}  //声音大小
-          // paused={false}  //默认播放
-          // repeat={false} //不重复播放
-          muted={true} //是否静音
+          // rate={options.rate} //1.0表示默认速率
+          // volume={options.volume}  //声音大小
+          // paused={options.paused}  //默认播放
+          // repeat={options.repeat} //不重复播放
+          muted={options.muted} //是否静音
           controls={options.controls} // 显示控件
           resizeMode={options.resizeMode} // 等比缩放
           style={options.style} // 样式

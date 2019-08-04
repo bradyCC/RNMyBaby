@@ -4,8 +4,12 @@
  * @Last Created time: 20:24:26
  * @Description:
  */
-import React, { Component} from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, { Component } from "react";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { WebView } from "react-native-webview";
+
+// Dimensions 用于获取设备宽、高、分辨率
+const { width, height } = Dimensions.get("window");
 
 type Props = {};
 export default class Record extends Component<Props> {
@@ -26,7 +30,10 @@ export default class Record extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Record</Text>
+        <WebView
+          style={{ width: width, height: height }}
+          source={{ uri: "https://reactnative.cn/" }}
+        />
       </View>
     );
   }
