@@ -77,6 +77,7 @@ export default class VideoListItem extends Component<Props> {
         <TouchableOpacity
           onPress={() =>
             props.navigation.navigate("VideoDetail", {
+              id: item._id,
               title: item.title,
               video: item.video,
               author: item.author

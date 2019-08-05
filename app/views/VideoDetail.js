@@ -5,8 +5,10 @@
  * @Description:
  */
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text, Dimensions, ScrollView } from "react-native";
+
 import VideoPlayer from "../components/VideoPlayer";
+import VideoCommentList from "../components/VideoCommentList";
 
 // Dimensions 用于获取设备宽、高、分辨率
 const { width, height } = Dimensions.get("window");
@@ -33,22 +35,53 @@ export default class VideoDetail extends Component<Props> {
         controls: true, // 显示控件
         resizeMode: "contain", // 等比缩放
         style: styles.backgroundVideo // 样式
-      }
+      },
+      commentList: [] // 评论列表
     };
   }
+
+  // 获取视频评论列表
+  getCommentList = id => {
+    let url = `http://rap2api.taobao.org/app/mock/227073/api/comments?accessToken="123"&id=${id}`;
+    let options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    fetch(url, options)
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          this.setState({
+            commentList: result.data
+          });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
 
   // 渲染
   render() {
     const { params } = this.props.navigation.state;
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <VideoPlayer
           video={params.video}
           options={this.state.options}
           author={params.author}
         />
-      </View>
+        <VideoCommentList commentList={this.state.commentList} />
+      </ScrollView>
     );
+  }
+
+  componentDidMount() {
+    let id = this.props.navigation.state.params.id;
+    this.getCommentList(id);
   }
 }
 
@@ -57,7 +90,8 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
-    backgroundColor: "#F5FCFF"
+    backgroundColor: "#F5FCFF",
+    paddingBottom: 12
   },
   backgroundVideo: {
     width: width,

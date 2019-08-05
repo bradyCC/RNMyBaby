@@ -57,16 +57,21 @@ export default class VideoPlayer extends Component<Props> {
           // ref={ref => (this.player = ref)}
           // onBuffer={}
         />
-        <View style={styles.authorInfo}>
-          <View style={styles.infoLeft}>
-            <Image
-              source={{ uri: author.avatar }}
-              style={styles.authorHeader}
-            />
+        <View>
+          <View style={styles.authorTop}>
+            <Text style={styles.authorTitle}>视频简介：</Text>
           </View>
-          <View style={styles.infoRight}>
-            <Text>{author.nickname}</Text>
-            <Text>{author.desc}</Text>
+          <View style={styles.authorInfo}>
+            <View style={styles.infoLeft}>
+              <Image
+                source={{ uri: author.avatar }}
+                style={styles.authorHeader}
+              />
+            </View>
+            <View style={styles.infoRight}>
+              <Text>{author.nickname}</Text>
+              <Text>{author.desc}</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -74,7 +79,7 @@ export default class VideoPlayer extends Component<Props> {
   }
 
   componentDidMount() {
-    console.log(this.props);
+    // console.log(this.props);
   }
 }
 
@@ -83,12 +88,22 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
-    backgroundColor: "#FCF5FF"
+    // backgroundColor: "#FCF5FF"
+  },
+  authorTop: {
+    padding: 12,
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#dbdbdb"
+  },
+  authorTitle: {
+    fontSize: 18
   },
   authorInfo: {
     padding: 12,
     flexDirection: "row",
-    // alignItems: "center"
+    // alignItems: "center",
+    color: "#333"
   },
   authorHeader: {
     width: 64,

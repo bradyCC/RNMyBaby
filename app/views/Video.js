@@ -73,7 +73,7 @@ export default class Video extends Component<Props> {
     // );
 
     // 使用 fetch 获取模拟数据
-    let url = `http://rap2api.taobao.org/app/mock/227073/api/videolist?accessToken=123?${
+    let url = `http://rap2api.taobao.org/app/mock/227073/api/videolist?accessToken="123"&page=${
       resultData.page
     }`;
     let options = {
