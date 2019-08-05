@@ -9,13 +9,13 @@ import { StyleSheet, View, Text, Image } from "react-native";
 import propTypes from "prop-types";
 
 type Props = {};
-export default class VideoCommentList extends Component<Props> {
+export default class VideoCommentItem extends Component<Props> {
   // 默认属性
   static defaultProps = {};
 
   // 属性类型
   static propTypes = {
-    commentList: propTypes.array
+    item: propTypes.object
   };
 
   // 构造
@@ -27,33 +27,26 @@ export default class VideoCommentList extends Component<Props> {
 
   // 渲染
   render() {
-    const { commentList } = this.props;
+    const { item } = this.props;
     return (
       <View style={styles.container}>
-        <Text style={styles.commentTitle}>评论内容：</Text>
-        {commentList.map(item => {
-          return (
-            <View style={styles.commentInfo} key={item._id}>
-              <View style={styles.infoLeft}>
-                <Image
-                  source={{ uri: item.replyBy.avatar }}
-                  style={styles.commentHeader}
-                />
-              </View>
-              <View style={styles.infoRight}>
-                <Text style={styles.nickname}>{item.replyBy.nickname}</Text>
-                <Text>{item.content}</Text>
-              </View>
-            </View>
-          );
-        })}
+        <View style={styles.commentInfo} key={item._id}>
+          <View style={styles.infoLeft}>
+            <Image
+              source={{ uri: item.replyBy.avatar }}
+              style={styles.commentHeader}
+            />
+          </View>
+          <View style={styles.infoRight}>
+            <Text style={styles.nickname}>{item.replyBy.nickname}</Text>
+            <Text>{item.content}</Text>
+          </View>
+        </View>
       </View>
     );
   }
 
-  componentDidMount() {
-    // console.log(this.props.commentList);
-  }
+  componentDidMount() {}
 }
 
 const styles = StyleSheet.create({
@@ -62,10 +55,6 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     // alignItems: "center",
     // backgroundColor: "#F5FCFF"
-  },
-  commentTitle: {
-    padding: 12,
-    color: "#333"
   },
   commentInfo: {
     padding: 12,

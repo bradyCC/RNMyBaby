@@ -5,10 +5,18 @@
  * @Description:
  */
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Dimensions, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+  ScrollView,
+  FlatList,
+  ActivityIndicator
+} from "react-native";
 
 import VideoPlayer from "../components/VideoPlayer";
-import VideoCommentList from "../components/VideoCommentList";
+import VideoCommentItem from "../components/VideoCommentItem";
 
 // Dimensions 用于获取设备宽、高、分辨率
 const { width, height } = Dimensions.get("window");
@@ -36,7 +44,10 @@ export default class VideoDetail extends Component<Props> {
         resizeMode: "contain", // 等比缩放
         style: styles.backgroundVideo // 样式
       },
-      commentList: [] // 评论列表
+      commentList: [], // 评论列表
+      isLoading: false, // 上拉加载更多状态
+      isRefreshing: false, // 下拉刷新状态
+      noMore: false // 判断是否有更多数据需要加载
     };
   }
 
@@ -74,7 +85,37 @@ export default class VideoDetail extends Component<Props> {
           options={this.state.options}
           author={params.author}
         />
-        <VideoCommentList commentList={this.state.commentList} />
+        <Text style={styles.commentTitle}>评论内容：</Text>
+        <FlatList
+          data={this.state.commentList}
+          extraData={this.state}
+          keyExtractor={item => item._id}
+          // onEndReached={() => this.fetchMoreData()}
+          // onEndReachedThreshold={0.5}
+          ListFooterComponent={() => {
+            if (this.state.isLoading) {
+              return (
+                <View style={styles.fetchMore}>
+                  <Text style={styles.fetchMoreText}>加载更多</Text>
+                  <View style={styles.indicatorStyle}>
+                    <ActivityIndicator size="small" color="#108ee9" />
+                  </View>
+                </View>
+              );
+            } else if (this.state.noMore) {
+              return (
+                <View style={styles.fetchMore}>
+                  <Text style={styles.fetchMoreText}>到底了</Text>
+                </View>
+              );
+            } else {
+              return null;
+            }
+          }}
+          // refreshing={this.state.isRefreshing}
+          // onRefresh={() => this.onRefreshData()}
+          renderItem={({ item }) => <VideoCommentItem item={item} />}
+        />
       </ScrollView>
     );
   }
@@ -102,5 +143,25 @@ const styles = StyleSheet.create({
     // bottom: 0,
     // right: 0,
     // backgroundColor: "#000"
-  }
+  },
+  fetchMore: {
+    width: width,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 12,
+    paddingBottom: 12
+  },
+  fetchMoreText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333"
+  },
+  indicatorStyle: {
+    marginLeft: 12
+  },
+  commentTitle: {
+    padding: 12,
+    color: "#333"
+  },
 });
