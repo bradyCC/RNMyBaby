@@ -139,10 +139,7 @@ export default class VideoDetail extends Component<Props> {
     const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
-        <VideoPlayer
-          video={params.video}
-          options={this.state.options}
-        />
+        <VideoPlayer video={params.video} options={this.state.options} />
         <FlatList
           data={resultData.resultList}
           extraData={this.state}
@@ -225,26 +222,6 @@ const styles = StyleSheet.create({
     // right: 0,
     // backgroundColor: "#000"
   },
-  fetchMore: {
-    width: width,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingTop: 12,
-    paddingBottom: 12
-  },
-  fetchMoreText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333"
-  },
-  indicatorStyle: {
-    marginLeft: 12
-  },
-  commentTitle: {
-    padding: 12,
-    color: "#333"
-  },
   authorTop: {
     padding: 12,
     alignItems: "center",
@@ -265,8 +242,29 @@ const styles = StyleSheet.create({
     height: 64,
     borderRadius: 32
   },
+  infoLeft: {},
   infoRight: {
     flex: 1,
     marginLeft: 8
   },
+  fetchMore: {
+    width: width,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 12,
+    paddingBottom: 12
+  },
+  fetchMoreText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333"
+  },
+  indicatorStyle: {
+    marginLeft: 12
+  },
+  commentTitle: {
+    padding: 12,
+    color: "#333"
+  }
 });
