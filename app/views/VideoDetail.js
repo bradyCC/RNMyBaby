@@ -12,7 +12,8 @@ import {
   Dimensions,
   ScrollView,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  Image
 } from "react-native";
 
 import VideoPlayer from "../components/VideoPlayer";
@@ -20,6 +21,13 @@ import VideoCommentItem from "../components/VideoCommentItem";
 
 // Dimensions 用于获取设备宽、高、分辨率
 const { width, height } = Dimensions.get("window");
+
+let resultData = {
+  page: 1, // 当前页
+  step: 1, // 翻页
+  total: 0, // 数据总条数
+  resultList: [] // 数据列表
+};
 
 type Props = {};
 export default class VideoDetail extends Component<Props> {
@@ -44,7 +52,7 @@ export default class VideoDetail extends Component<Props> {
         resizeMode: "contain", // 等比缩放
         style: styles.backgroundVideo // 样式
       },
-      commentList: [], // 评论列表
+      id: "",
       isLoading: false, // 上拉加载更多状态
       isRefreshing: false, // 下拉刷新状态
       noMore: false // 判断是否有更多数据需要加载
@@ -52,8 +60,9 @@ export default class VideoDetail extends Component<Props> {
   }
 
   // 获取视频评论列表
-  getCommentList = id => {
-    let url = `http://rap2api.taobao.org/app/mock/227073/api/comments?accessToken="123"&id=${id}`;
+  getCommentList = (id, page) => {
+    console.log("执行了");
+    let url = `http://rap2api.taobao.org/app/mock/227073/api/comments?accessToken="123"&id=${id}&page=${page}`;
     let options = {
       method: "GET",
       headers: {
@@ -65,9 +74,29 @@ export default class VideoDetail extends Component<Props> {
       .then(response => response.json())
       .then(result => {
         if (result.success) {
+          if (this.state.isRefreshing) {
+            resultData.resultList =
+              resultData.resultList.length > 0
+                ? [...result.data, ...resultData.resultList]
+                : result.data;
+          } else {
+            resultData.resultList =
+              resultData.resultList.length > 0
+                ? [...resultData.resultList, ...result.data]
+                : result.data;
+          }
+          resultData.total = result.total;
+
           this.setState({
-            commentList: result.data
+            isLoading: false,
+            isRefreshing: false
           });
+          if (resultData.resultList.length == resultData.total) {
+            this.setState({
+              noMore: true
+            });
+          }
+          console.log(resultData.resultList);
         }
       })
       .catch(err => {
@@ -75,23 +104,65 @@ export default class VideoDetail extends Component<Props> {
       });
   };
 
+  fetchMoreData = () => {
+    console.log("触底了!");
+    if (
+      resultData.resultList.length == resultData.total ||
+      this.state.isLoading
+    )
+      return false;
+    this.setState({
+      isLoading: true
+    });
+    setTimeout(() => {
+      resultData.page = resultData.page + resultData.step;
+      this.getCommentList(this.state.id, resultData.page);
+    }, 1000);
+  };
+
+  onRefreshData = () => {
+
+  };
+
   // 渲染
   render() {
     const { params } = this.props.navigation.state;
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <VideoPlayer
           video={params.video}
           options={this.state.options}
-          author={params.author}
         />
-        <Text style={styles.commentTitle}>评论内容：</Text>
         <FlatList
-          data={this.state.commentList}
+          data={resultData.resultList}
           extraData={this.state}
           keyExtractor={item => item._id}
-          // onEndReached={() => this.fetchMoreData()}
-          // onEndReachedThreshold={0.5}
+          ListHeaderComponent={() => {
+            return (
+              <View>
+                <View>
+                  <View style={styles.authorTop}>
+                    <Text style={styles.authorTitle}>视频简介：</Text>
+                  </View>
+                  <View style={styles.authorInfo}>
+                    <View style={styles.infoLeft}>
+                      <Image
+                        source={{ uri: params.author.avatar }}
+                        style={styles.authorHeader}
+                      />
+                    </View>
+                    <View style={styles.infoRight}>
+                      <Text>{params.author.nickname}</Text>
+                      <Text>{params.author.desc}</Text>
+                    </View>
+                  </View>
+                </View>
+                <Text style={styles.commentTitle}>评论内容：</Text>
+              </View>
+            );
+          }}
+          onEndReached={() => this.fetchMoreData()}
+          onEndReachedThreshold={0.5}
           ListFooterComponent={() => {
             if (this.state.isLoading) {
               return (
@@ -112,17 +183,17 @@ export default class VideoDetail extends Component<Props> {
               return null;
             }
           }}
-          // refreshing={this.state.isRefreshing}
-          // onRefresh={() => this.onRefreshData()}
+          refreshing={this.state.isRefreshing}
+          onRefresh={() => this.onRefreshData()}
           renderItem={({ item }) => <VideoCommentItem item={item} />}
         />
-      </ScrollView>
+      </View>
     );
   }
 
   componentDidMount() {
     let id = this.props.navigation.state.params.id;
-    this.getCommentList(id);
+    this.getCommentList(id, this.state.page);
   }
 }
 
@@ -163,5 +234,29 @@ const styles = StyleSheet.create({
   commentTitle: {
     padding: 12,
     color: "#333"
+  },
+  authorTop: {
+    padding: 12,
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#dbdbdb"
+  },
+  authorTitle: {
+    fontSize: 18
+  },
+  authorInfo: {
+    padding: 12,
+    flexDirection: "row",
+    // alignItems: "center",
+    color: "#333"
+  },
+  authorHeader: {
+    width: 64,
+    height: 64,
+    borderRadius: 32
+  },
+  infoRight: {
+    flex: 1,
+    marginLeft: 8
   },
 });

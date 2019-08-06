@@ -27,8 +27,7 @@ export default class VideoPlayer extends Component<Props> {
   // 属性类型
   static propTypes = {
     video: PropTypes.string,
-    options: PropTypes.object,
-    author: PropTypes.object
+    options: PropTypes.object
   };
 
   // 构造
@@ -55,7 +54,7 @@ export default class VideoPlayer extends Component<Props> {
 
   // 渲染
   render() {
-    const { video, options, author } = this.props;
+    const { video, options } = this.props;
     return (
       <View style={styles.container}>
         {this.state.isCompleted ? null : (
@@ -84,23 +83,6 @@ export default class VideoPlayer extends Component<Props> {
           // ref={ref => (this.player = ref)}
           // onBuffer={}
         />
-        <View>
-          <View style={styles.authorTop}>
-            <Text style={styles.authorTitle}>视频简介：</Text>
-          </View>
-          <View style={styles.authorInfo}>
-            <View style={styles.infoLeft}>
-              <Image
-                source={{ uri: author.avatar }}
-                style={styles.authorHeader}
-              />
-            </View>
-            <View style={styles.infoRight}>
-              <Text>{author.nickname}</Text>
-              <Text>{author.desc}</Text>
-            </View>
-          </View>
-        </View>
       </View>
     );
   }
@@ -112,34 +94,10 @@ export default class VideoPlayer extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
     // backgroundColor: "#FCF5FF"
-  },
-  authorTop: {
-    padding: 12,
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: "#dbdbdb"
-  },
-  authorTitle: {
-    fontSize: 18
-  },
-  authorInfo: {
-    padding: 12,
-    flexDirection: "row",
-    // alignItems: "center",
-    color: "#333"
-  },
-  authorHeader: {
-    width: 64,
-    height: 64,
-    borderRadius: 32
-  },
-  infoRight: {
-    flex: 1,
-    marginLeft: 8
   },
   loading: {
     width: width,
@@ -152,5 +110,8 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 20,
     color: "#108ee9"
+  },
+  indicatorStyle: {
+    marginLeft: 12
   }
 });
