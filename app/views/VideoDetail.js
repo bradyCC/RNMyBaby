@@ -121,7 +121,17 @@ export default class VideoDetail extends Component<Props> {
   };
 
   onRefreshData = () => {
-
+    console.log("刷新了!");
+    if (
+      resultData.resultList.length == resultData.total ||
+      this.state.isRefreshing
+    )
+      return false;
+    this.setState({
+      isRefreshing: true
+    });
+    resultData.page = resultData.page + resultData.step;
+    this.getCommentList(this.state.id, resultData.page);
   };
 
   // 渲染
