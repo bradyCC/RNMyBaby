@@ -72,57 +72,59 @@ export default class VideoListItem extends Component<Props> {
   render() {
     const { item, props } = this.props;
     return (
-      <View style={styles.item}>
-        <Text style={styles.title}>{item.title}</Text>
-        <TouchableOpacity
-          onPress={() =>
-            props.navigation.navigate("VideoDetail", {
-              id: item._id,
-              title: item.title,
-              video: item.video,
-              author: item.author
-            })
-          }
-        >
-          <View style={styles.thumbBox}>
-            <Image style={styles.thumb} source={{ uri: item.thumb }} />
-            <Icon
-              // name={focused ? "ios-home" : "ios-home"}
-              name="ios-play"
-              size={28}
-              style={styles.play}
-            />
-          </View>
-        </TouchableOpacity>
-        <View style={styles.itemFooter}>
+      <View>
+        <View style={styles.item}>
+          <Text style={styles.title}>{item.title}</Text>
           <TouchableOpacity
-            style={styles.flexStyle}
-            onPress={() => this.giveLike(item._id)}
+            onPress={() =>
+              props.navigation.navigate("VideoDetail", {
+                id: item._id,
+                title: item.title,
+                video: item.video,
+                author: item.author
+              })
+            }
           >
-            <View style={styles.handleBox}>
-              <Icon
-                // name={focused ? "ios-home" : "ios-home"} // ios-heart-empty
-                name={this.state.like ? "ios-heart" : "ios-heart-empty"}
-                size={28}
-                style={styles.up}
-              />
-              <Text style={styles.handleText}>点赞</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.flexStyle}
-            onPress={() => Alert.alert("评论")}
-          >
-            <View style={[styles.handleBox, styles.handleBoxRight]}>
+            <View style={styles.thumbBox}>
+              <Image style={styles.thumb} source={{ uri: item.thumb }} />
               <Icon
                 // name={focused ? "ios-home" : "ios-home"}
-                name="ios-chatbubbles"
+                name="ios-play"
                 size={28}
-                style={styles.commentIcon}
+                style={styles.play}
               />
-              <Text style={styles.handleText}>评论</Text>
             </View>
           </TouchableOpacity>
+          <View style={styles.itemFooter}>
+            <TouchableOpacity
+              style={styles.flexStyle}
+              onPress={() => this.giveLike(item._id)}
+            >
+              <View style={styles.handleBox}>
+                <Icon
+                  // name={focused ? "ios-home" : "ios-home"} // ios-heart-empty
+                  name={this.state.like ? "ios-heart" : "ios-heart-empty"}
+                  size={28}
+                  style={styles.up}
+                />
+                <Text style={styles.handleText}>点赞</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.flexStyle}
+              onPress={() => Alert.alert("评论")}
+            >
+              <View style={[styles.handleBox, styles.handleBoxRight]}>
+                <Icon
+                  // name={focused ? "ios-home" : "ios-home"}
+                  name="ios-chatbubbles"
+                  size={28}
+                  style={styles.commentIcon}
+                />
+                <Text style={styles.handleText}>评论</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
