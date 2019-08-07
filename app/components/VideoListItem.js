@@ -28,7 +28,8 @@ export default class VideoListItem extends Component<Props> {
 
   // 属性类型
   static propTypes = {
-    item: propTypes.object
+    item: propTypes.object,
+    showModal: propTypes.func
   };
 
   // 构造
@@ -40,8 +41,9 @@ export default class VideoListItem extends Component<Props> {
     };
   }
 
+  // 点赞
   giveLike = id => {
-    let url = `http://rap2api.taobao.org/app/mock/227073/api/givelike`;
+    let url = "http://rap2api.taobao.org/app/mock/227073/api/givelike";
     let options = {
       method: "POST",
       headers: {
@@ -70,7 +72,7 @@ export default class VideoListItem extends Component<Props> {
 
   // 渲染
   render() {
-    const { item, props } = this.props;
+    const { item, props, showModal } = this.props;
     return (
       <View>
         <View style={styles.item}>
@@ -112,7 +114,7 @@ export default class VideoListItem extends Component<Props> {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.flexStyle}
-              onPress={() => Alert.alert("评论")}
+              onPress={() => showModal(true, item._id)}
             >
               <View style={[styles.handleBox, styles.handleBoxRight]}>
                 <Icon

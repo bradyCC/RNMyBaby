@@ -17,6 +17,7 @@ import {
 // import Mock from "mockjs";
 
 import VideoListItem from "../components/VideoListItem";
+import VideoCommentModal from "../components/VideoCommentModal";
 
 // Dimensions 用于获取设备宽、高、分辨率
 const { width, height } = Dimensions.get("window");
@@ -43,7 +44,9 @@ export default class Video extends Component<Props> {
     this.state = {
       isLoading: false, // 上拉加载更多状态
       isRefreshing: false, // 下拉刷新状态
-      noMore: false // 判断是否有更多数据需要加载
+      noMore: false, // 判断是否有更多数据需要加载
+      modalVisible: false, // 是否显示Modal
+      id: `` // 视频ID
     };
   }
 
@@ -148,6 +151,19 @@ export default class Video extends Component<Props> {
     this.fetchData();
   };
 
+  // 显示Modal
+  showModal = (flag, id = ``) => {
+    if (flag) {
+      console.log("showModal");
+    } else {
+      console.log("hideModal");
+    }
+    this.setState({
+      modalVisible: flag,
+      id: id
+    });
+  };
+
   // 渲染
   render() {
     return (
@@ -186,8 +202,17 @@ export default class Video extends Component<Props> {
           refreshing={this.state.isRefreshing}
           onRefresh={() => this.onRefreshData()}
           renderItem={({ item }) => (
-            <VideoListItem item={item} props={this.props} />
+            <VideoListItem
+              item={item}
+              props={this.props}
+              showModal={(flag, id) => this.showModal(flag, id)}
+            />
           )}
+        />
+        <VideoCommentModal
+          modalVisible={this.state.modalVisible}
+          id={this.state.id}
+          showModal={flag => this.showModal(flag)}
         />
       </View>
     );

@@ -11,9 +11,17 @@ import {
   Text,
   Modal,
   Alert,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity,
+  Dimensions,
+  TextInput,
+  Button
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
 import propTypes from "prop-types";
+
+// Dimensions 用于获取设备宽、高、分辨率
+const { width, height } = Dimensions.get("window");
 
 type Props = {};
 export default class VideoCommentModal extends Component<Props> {
@@ -22,7 +30,8 @@ export default class VideoCommentModal extends Component<Props> {
 
   // 属性类型
   static propTypes = {
-    modalVisible: propTypes.boolean
+    modalVisible: propTypes.bool,
+    showModal: propTypes.func
   };
 
   // 构造
@@ -30,52 +39,68 @@ export default class VideoCommentModal extends Component<Props> {
     super(props);
     // 初始状态
     this.state = {
-      modalVisible: false
+      text: ``
     };
   }
 
-  setModalVisible = visible => {
+  // TextInput数据初始化
+  textInit = () => {
     this.setState({
-      modalVisible: visible
+      text: ``
     });
   };
 
   // 渲染
   render() {
+    const { modalVisible, id, showModal } = this.props;
     return (
       <View style={styles.container}>
         <Modal
           animationType="slide"
-          transparent={false}
-          visible={this.state.modalVisible}
+          transparent={true}
+          visible={modalVisible}
           onRequestClose={() => {
             Alert.alert("Modal has been closed.");
           }}
-          style={styles.modalStyle}
         >
-          <View style={{ marginTop: 22 }}>
-            <View>
-              <Text>Hello World!</Text>
-
-              <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(!this.state.modalVisible);
-                }}
-              >
-                <Text>Hide Modal</Text>
-              </TouchableHighlight>
+          <View style={styles.modalView}>
+            <View style={styles.modalBox}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalHeaderTitle}>视频评论：</Text>
+                <TouchableOpacity
+                  onPress={() => [showModal(false), this.textInit()]}
+                >
+                  <Icon
+                    // name={focused ? "ios-home" : "ios-home"} // ios-heart-empty
+                    name="ios-close"
+                    size={28}
+                    style={styles.close}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.modalContent}>
+                <TextInput
+                  placeholder="请输入评论内容"
+                  onChangeText={text => this.setState({ text })}
+                  value={this.state.text}
+                  multiline={true}
+                  numberOfLines={4}
+                  autoFocus={true}
+                  style={styles.modalTextInput}
+                />
+                <View style={styles.modalButton}>
+                  <Button
+                    title="提交"
+                    color="#108ee9"
+                    onPress={() => Alert.alert(id)}
+                  />
+                </View>
+              </View>
             </View>
           </View>
         </Modal>
       </View>
     );
-  }
-
-  componentDidMount() {
-    const { modalVisible } = this.props;
-    this.setState({
-      modalVisible: modalVisible
-    });
   }
 }
 
@@ -86,7 +111,40 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     // backgroundColor: "#F5FCFF"
   },
-  modalStyle: {
-    backgroundColor: "#000"
+  modalView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)"
+  },
+  modalBox: {
+    width: width * 0.8,
+    height: width,
+    padding: 20,
+    borderRadius: 20,
+    // flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
+    backgroundColor: "#F5FCFF"
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  modalHeaderTitle: {
+    color: "#333"
+  },
+  modalContent: {
+    marginTop: 20
+  },
+  modalTextInput: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#dbdbdb",
+    borderRadius: 10
+  },
+  modalButton: {
+    marginTop: 20
   }
 });
